@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.10.0",
   "engineVersion": "0edf323efd1d98336f3f0a68684b56f689b900d3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Get a free hosted Postgres database in seconds: `npx create-db`\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"..app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../app/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id          String    @id @default(uuid())\n  email       String    @unique\n  password    String\n  firstname   String\n  lastname    String\n  phoneNumber String?   @unique\n  role        String    @default(\"CUSTOMER\")\n  status      String    @default(\"ACTIVE\")\n  lastLogin   DateTime?\n  createdAt   DateTime  @default(now())\n  privileges  String[]  @default([])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -32,10 +32,10 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"firstname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastname\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"lastLogin\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"privileges\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null,\"schema\":null}},\"enums\":{},\"types\":{}}")
 config.parameterizationSchema = {
-  strings: JSON.parse("[]"),
-  graph: "AAAA"
+  strings: JSON.parse("[\"where\",\"User.findUnique\",\"User.findUniqueOrThrow\",\"orderBy\",\"cursor\",\"User.findFirst\",\"User.findFirstOrThrow\",\"User.findMany\",\"data\",\"User.createOne\",\"User.createMany\",\"User.createManyAndReturn\",\"User.updateOne\",\"User.updateMany\",\"User.updateManyAndReturn\",\"create\",\"update\",\"User.upsertOne\",\"User.deleteOne\",\"User.deleteMany\",\"having\",\"_count\",\"_min\",\"_max\",\"User.groupBy\",\"User.aggregate\",\"AND\",\"OR\",\"NOT\",\"id\",\"email\",\"password\",\"firstname\",\"lastname\",\"phoneNumber\",\"role\",\"status\",\"lastLogin\",\"createdAt\",\"privileges\",\"equals\",\"has\",\"hasEvery\",\"hasSome\",\"in\",\"notIn\",\"lt\",\"lte\",\"gt\",\"gte\",\"not\",\"contains\",\"startsWith\",\"endsWith\",\"set\",\"push\"]"),
+  graph: "OAkQDhoAACoAMBsAAAQAEBwAACoAMB0BAAAAAR4BAAAAAR8BACsAISABACsAISEBACsAISIBAAAAASMBACsAISQBACsAISVAAC0AISZAAC4AIScAAB8AIAEAAAABACABAAAAAQAgDhoAACoAMBsAAAQAEBwAACoAMB0BACsAIR4BACsAIR8BACsAISABACsAISEBACsAISIBACwAISMBACsAISQBACsAISVAAC0AISZAAC4AIScAAB8AIAIiAAAvACAlAAAvACADAAAABAAgAwAABQAwBAAAAQAgAwAAAAQAIAMAAAUAMAQAAAEAIAMAAAAEACADAAAFADAEAAABACALHQEAAAABHgEAAAABHwEAAAABIAEAAAABIQEAAAABIgEAAAABIwEAAAABJAEAAAABJUAAAAABJkAAAAABJwAAOAAgAQgAAAkAIAsdAQAAAAEeAQAAAAEfAQAAAAEgAQAAAAEhAQAAAAEiAQAAAAEjAQAAAAEkAQAAAAElQAAAAAEmQAAAAAEnAAA4ACABCAAACwAwAQgAAAsAMAsdAQAzACEeAQAzACEfAQAzACEgAQAzACEhAQAzACEiAQA0ACEjAQAzACEkAQAzACElQAA1ACEmQAA2ACEnAAA3ACACAAAAAQAgCAAADgAgCx0BADMAIR4BADMAIR8BADMAISABADMAISEBADMAISIBADQAISMBADMAISQBADMAISVAADUAISZAADYAIScAADcAIAIAAAAEACAIAAAQACACAAAABAAgCAAAEAAgAwAAAAEAIA8AAAkAIBAAAA4AIAEAAAABACABAAAABAAgBRUAADAAIBYAADIAIBcAADEAICIAAC8AICUAAC8AIA4aAAAaADAbAAAXABAcAAAaADAdAQAbACEeAQAbACEfAQAbACEgAQAbACEhAQAbACEiAQAcACEjAQAbACEkAQAbACElQAAdACEmQAAeACEnAAAfACADAAAABAAgAwAAFgAwFAAAFwAgAwAAAAQAIAMAAAUAMAQAAAEAIA4aAAAaADAbAAAXABAcAAAaADAdAQAbACEeAQAbACEfAQAbACEgAQAbACEhAQAbACEiAQAcACEjAQAbACEkAQAbACElQAAdACEmQAAeACEnAAAfACAOFQAAIQAgFgAAKQAgFwAAKQAgKAEAAAABLAEAAAAELQEAAAAELgEAAAABLwEAAAABMAEAAAABMQEAAAABMgEAKAAhMwEAAAABNAEAAAABNQEAAAABDhUAACQAIBYAACcAIBcAACcAICgBAAAAASwBAAAABS0BAAAABS4BAAAAAS8BAAAAATABAAAAATEBAAAAATIBACYAITMBAAAAATQBAAAAATUBAAAAAQsVAAAkACAWAAAlACAXAAAlACAoQAAAAAEsQAAAAAUtQAAAAAUuQAAAAAEvQAAAAAEwQAAAAAExQAAAAAEyQAAjACELFQAAIQAgFgAAIgAgFwAAIgAgKEAAAAABLEAAAAAELUAAAAAELkAAAAABL0AAAAABMEAAAAABMUAAAAABMkAAIAAhBCgBAAAABSkBAAAAASoBAAAABCsBAAAABAsVAAAhACAWAAAiACAXAAAiACAoQAAAAAEsQAAAAAQtQAAAAAQuQAAAAAEvQAAAAAEwQAAAAAExQAAAAAEyQAAgACEIKAIAAAABLAIAAAAELQIAAAAELgIAAAABLwIAAAABMAIAAAABMQIAAAABMgIAIQAhCChAAAAAASxAAAAABC1AAAAABC5AAAAAAS9AAAAAATBAAAAAATFAAAAAATJAACIAIQsVAAAkACAWAAAlACAXAAAlACAoQAAAAAEsQAAAAAUtQAAAAAUuQAAAAAEvQAAAAAEwQAAAAAExQAAAAAEyQAAjACEIKAIAAAABLAIAAAAFLQIAAAAFLgIAAAABLwIAAAABMAIAAAABMQIAAAABMgIAJAAhCChAAAAAASxAAAAABS1AAAAABS5AAAAAAS9AAAAAATBAAAAAATFAAAAAATJAACUAIQ4VAAAkACAWAAAnACAXAAAnACAoAQAAAAEsAQAAAAUtAQAAAAUuAQAAAAEvAQAAAAEwAQAAAAExAQAAAAEyAQAmACEzAQAAAAE0AQAAAAE1AQAAAAELKAEAAAABLAEAAAAFLQEAAAAFLgEAAAABLwEAAAABMAEAAAABMQEAAAABMgEAJwAhMwEAAAABNAEAAAABNQEAAAABDhUAACEAIBYAACkAIBcAACkAICgBAAAAASwBAAAABC0BAAAABC4BAAAAAS8BAAAAATABAAAAATEBAAAAATIBACgAITMBAAAAATQBAAAAATUBAAAAAQsoAQAAAAEsAQAAAAQtAQAAAAQuAQAAAAEvAQAAAAEwAQAAAAExAQAAAAEyAQApACEzAQAAAAE0AQAAAAE1AQAAAAEOGgAAKgAwGwAABAAQHAAAKgAwHQEAKwAhHgEAKwAhHwEAKwAhIAEAKwAhIQEAKwAhIgEALAAhIwEAKwAhJAEAKwAhJUAALQAhJkAALgAhJwAAHwAgCygBAAAAASwBAAAABC0BAAAABC4BAAAAAS8BAAAAATABAAAAATEBAAAAATIBACkAITMBAAAAATQBAAAAATUBAAAAAQsoAQAAAAEsAQAAAAUtAQAAAAUuAQAAAAEvAQAAAAEwAQAAAAExAQAAAAEyAQAnACEzAQAAAAE0AQAAAAE1AQAAAAEIKEAAAAABLEAAAAAFLUAAAAAFLkAAAAABL0AAAAABMEAAAAABMUAAAAABMkAAJQAhCChAAAAAASxAAAAABC1AAAAABC5AAAAAAS9AAAAAATBAAAAAATFAAAAAATJAACIAIQAAAAABNgEAAAABATYBAAAAAQE2QAAAAAEBNkAAAAABAjYBAAAABDcBAAAABQE2AQAAAAQAAAAAAxUABhYABxcACAAAAAMVAAYWAAcXAAgBAgECAwEFBgEGBwEHCAEJCgEKDAILDQMMDwENEQIOEgQREwESFAETFQIYGAUZGQk"
 }
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
@@ -188,7 +188,15 @@ export interface PrismaClient<
     extArgs: ExtArgs
   }>>
 
-    
+      /**
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
+    * ```
+    */
+  get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {
